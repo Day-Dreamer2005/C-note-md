@@ -18,7 +18,8 @@ int main ()
   return 0;
 }
 ```
-
+注意⚠️
+- `strcpy()`直接将整个源字符串拷贝到目标空间，**包括`\0`**❗❗❗
 
 实现自己的**strcpy()** !!!
 ```C
@@ -202,6 +203,137 @@ int main()
 		printf("str1 < str2\n");
 	}
 
+	return 0;
+}
+```
+
+---
+
+## C库函数`strncat()`
+相比较`strcat()`，`strncat()`能指定追加的字符长度
+`char *strncat(char *dest, const char *src, size_t n)`
+```C
+int main()
+{
+	char str1[20] = "Hello";
+	char str2[10] = "World";
+
+	strncat(str1, str2, 3);
+
+	printf("%s\n", str1);
+
+	return 0;
+}
+```
+**注意**⚠️
+- 追加后的字符串会自动补上`\0`，以确保有结束标志
+- 当指定的追加长度大于源字符串长度时，只追加源字符串内容，最后补上`\0`
+- 要确保被追加的目标空间能够容纳追加的字符串和`\0`
+
+---
+
+## C库函数`strncpy()`
+把 **src** 所指向的字符串复制到 **dest**，最多复制 **n** 个字符。<mark style="background: #FFF3A3A6;">当 src 的长度小于 n 时，dest 的剩余部分将用空字节填充</mark>
+
+```C
+int main()
+{
+	char str1[20] = "Who am I?";
+	char str2[10] = "Asleep";
+
+	strncpy(str1, str2, 6);//输出Asleep I?
+	strncpy(str1, str2, 7);//输出Asleep
+	strncpy(str1, str2, 10);//输出Asleep
+
+
+
+	printf("%s\n", str1);
+
+	return 0;
+}
+```
+注意⚠️
+- `strncpy()`拷贝后不会自动补`\0`❗❗❗
+- 当指定的拷贝字符数量大于源字符串时，超过的部分以`\0`代替
+- 确保目标空间足够容纳
+
+---
+
+## C库函数`strncmp()`
+`int strncmp(const char *str1, const char *str2, size_t n)`把 **str1** 和 **str2** 进行比较，最多比较前 **n** 个字符
+```C
+int main()
+{
+	char str1[10] = "Asleep";
+	char str2[10] = "AslEEp";
+
+	int ret = strncmp(str1, str2, 3);//返回等于0
+	int ret = strncmp(str1, str2, 6);//返回大于0
+
+	printf("%d\n", ret);
+
+	return 0;
+}
+```
+
+---
+
+## C库函数`strstr()`
+`char *strstr(const char *str1, const char *str2);`在字符串`str1`中查找子字符串`str2`第一次出现的位置。如果找到，返回指向该位置的指针；若未找到，返回NULL
+```C
+int main()
+{
+	char str1[10] = "Asleep";
+	char str2[10] = "sleep";
+
+	printf("%s\n", strstr(str1, str2));
+	
+	return 0;
+}
+```
+
+实现自己的`strstr()`💡
+```C
+char* my_strstr(const char* str1, const char* str2)
+{
+	assert(str1 != NULL);
+	assert(str2 != NULL);
+
+	char* p1 = str1;
+	char* p2 = str2;
+	char* cur = str1;
+
+	if (*str2 == '\0')
+	{
+		return str1;
+	}
+	while (*cur)
+	{
+		p1 = cur;//定位子字符串起始位置
+		p2 = str2;
+
+		while ((*p1 != '\0') && (*p2 != '\0') && (*p1 == *p2))
+		{
+			//有相同的字符进入循环开始向后比较
+			p1++;
+			p2++;
+		}
+		if (*p2 == '\0')//向后比较结束且子字符串比较完毕
+		{
+			return cur;//找到子字符串
+		}
+		cur++;//有相同字符但并未完全匹配，向后为起始位置重新比较
+	}
+	return NULL;//Not found，遍历整个主字符串仍未找到
+
+}
+int main()
+{
+	char str1[10] = "Asleep";
+	char str2[10] = "sleep";
+
+	printf("%s\n", my_strstr(str1, str2));
+	
 	return 0;
 }
 ```
