@@ -337,3 +337,61 @@ int main()
 	return 0;
 }
 ```
+
+---
+
+## C库函数`strtok()`
+`char *strtok(char *str, const char *delim)`**strtok()** 是 C 标准库中的一个字符串处理函数，用于将字符串分割成一系列子字符串（即"标记"或"token"），分解字符串 **str** 为一组字符串，**delim** 为分隔符
+```C
+int main()
+{
+	char str[100] = "Asleep@github.com";
+	const char ch[10];
+
+	puts(str);
+
+	puts("请输入所要分割的字符:");
+	fgets(ch, sizeof(ch), stdin);
+
+	char *token;
+
+	for (token = strtok(str, ch); token != NULL; token = strtok(NULL, ch))
+	{
+		printf("%s\n", token);
+	}
+
+	return 0;
+}
+```
+注意⚠️
+- 第一次传入所需分割的字符串指针，后续只需传入`NULL`
+- `strtok()` 会修改传入的字符串，将分隔符替换为 `\0`（空字符）。因此，原始字符串会被破坏
+
+---
+
+## C库函数`strerror()`
+`char *strerror(int errnum)`从内部数组中搜索错误号 **errnum**，并返回一个指向错误消息字符串的指针。**strerror** 生成的错误字符串取决于开发平台和编译器  
+>**errnum** -- 错误号，通常是 **errno**
+该函数返回一个指向错误字符串的指针，该错误字符串描述了错误 errnum
+
+示例
+```C
+#include <stdio.h>
+#include <string.h>
+#include <errno.h>
+
+int main ()
+{
+   FILE *fp;
+
+   fp = fopen("file.txt","r");
+   if( fp == NULL ) 
+   {
+      printf("Error: %s\n", strerror(errno));
+   }
+   
+  return(0);
+}
+```
+让我们编译并运行上面的程序，这将产生以下结果，因为我们尝试打开一个不存在的文件：
+***Error: No such file or directory***
