@@ -396,6 +396,87 @@ int main ()
 让我们编译并运行上面的程序，这将产生以下结果，因为我们尝试打开一个不存在的文件：
 ***Error: No such file or directory***
 
+---
+
+## C库函数`memcpy()`
+`void *memcpy(void *str1, const void *str2, size_t n)`从存储区 **str2** 复制 **n** 个字节到存储区 **str1**
+- **str1** -- 指向用于存储复制内容的目标数组，类型强制转换为 void* 指针
+- **str2** -- 指向要复制的数据源，类型强制转换为 void* 指针
+- **n** -- 要被复制的字节数
+
+```C
+int main()
+{
+	char arr1[] = "Asleep";
+	char arr2[7];
+
+	int num[] = { 2,0,0,5,1,1,2,2 };
+	int cp_num[8];
+
+	struct student
+	{
+		char name[20];
+		int age;
+	};
+
+	struct student Stu[] = { {"Asleep",20},{"阿杜",21} };
+	struct student cp_Stu[3];
+
+	//F11调试以看结果
+	memcpy(arr2, arr1, sizeof(arr1));
+	memcpy(cp_Stu, Stu, sizeof(Stu));
+	memcpy(cp_num, num, sizeof(num));
+
+	return 0;
+}
+```
+
+**实现自己的`memcpy()`💡**
+```C
+void* my_memcpy(void* cp_arr, const void* arr, size_t n)
+{
+	assert(cp_arr != NULL);
+	assert(arr != NULL);
+
+	int i = 0;
+	for (i; i <= n; i++)
+	{
+		*(char*)cp_arr = *(char*)arr;
+		++(char*)cp_arr;
+		++(char*)arr;
+	}
+
+}
+
+int main()
+{
+	int arr[] = {1,2,3,4,5};
+	int cp_arr[10];
+
+	my_memcpy(cp_arr, arr, sizeof(arr));
+
+	for (int i = 0; i < sizeof(arr) / sizeof(arr[0]); i++)
+	{
+		printf("%d ", arr[i]);
+
+	}
+
+	return 0;
+
+```
+
+---
+
+## C库函数`memmove()`
+`void *memmove(void *str1, const void *str2, size_t n)` 从 **str2** 复制 **n** 个字符到 **str1**，但是在重叠内存块这方面，memmove() 是比 memcpy() 更安全的方法。如果目标区域和源区域有重叠的话，memmove() 能够保证源串在被覆盖之前将重叠区域的字节拷贝到目标区域中，复制后源区域的内容会被更改。<u>如果目标区域与源区域没有重叠，则和 memcpy() 函数功能相同</u>
+
+- **str1** -- 指向用于存储复制内容的目标数组，类型强制转换为 void* 指针
+- **str2** -- 指向要复制的数据源，类型强制转换为 void* 指针
+- **n** -- 要被复制的字节数
+
+
+---
+
 
 ## 字符串综合练习1
 

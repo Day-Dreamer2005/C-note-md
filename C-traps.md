@@ -43,3 +43,69 @@ int main()
 ```C
 " "  == {' ', '\0'}
 ```
+
+---
+
+### void类型指针注意事项⚠️⚠️⚠️
+
+#### 1.不能直接解引用
+```C
+int a = 10;
+void* p = &a;
+
+// ❌ 错误：不能直接解引用 void*
+// printf("%d\n", *p);
+
+// ✅ 正确：必须先转换为具体类型
+printf("%d\n", *(int*)p);
+```
+
+#### 2.不能进行指针算术运算
+```C
+int arr[] = {1, 2, 3, 4, 5};
+void* p = arr;
+
+// ❌ 错误：不能对 void* 进行算术运算
+// p++;  // 编译器不知道步长
+
+// ✅ 正确：先转换类型
+int* q = (int*)p;
+q++;  // 步长为 sizeof(int)
+```
+**原因**：指针运算需要知道指向类型的大小，`void` 类型没有大小信息
+
+#### 3.类型转换必须一致
+```C
+int a = 100;
+void* p = &a;
+
+// ✅ 正确：转换回原类型
+int* pi = (int*)p;
+printf("%d\n", *pi);  // 100
+
+// ⚠️ 危险：转换错误的类型
+double* pd = (double*)p;
+printf("%f\n", *pd);  // 未定义行为！
+```
+
+#### 4.函数参数和返回值
+`void*` 常用于实现泛型编程：
+```C
+// 泛型交换函数
+void swap(void* a, void* b, size_t size) {
+    char temp[size];
+    memcpy(temp, a, size);
+    memcpy(a, b, size);
+    memcpy(b, temp, size);
+}
+
+// 使用
+int x = 10, y = 20;
+swap(&x, &y, sizeof(int));
+
+double d1 = 3.14, d2 = 2.71;
+swap(&d1, &d2, sizeof(double));
+```
+
+---
+
