@@ -395,3 +395,76 @@ int main ()
 ```
 让我们编译并运行上面的程序，这将产生以下结果，因为我们尝试打开一个不存在的文件：
 ***Error: No such file or directory***
+
+
+## 字符串综合练习1
+
+```C
+//在句子中匹配给定的单词
+int main()
+{
+	char sch[10];//查找对象
+	char sent[1024];//源文章
+	char cp_sent[1024];//查找文章（副本）
+	char* p_first;//第一次出现的位置
+
+	char* token;
+	char* space = " ";//strtok分割标记
+	int i = 0;
+	int j = 0;
+	int count = 0;
+
+	printf("Please input sch:\n");
+	fgets(sch, sizeof(sch), stdin);
+	sch[strcspn(sch, "\r\n")] = '\0';//清除缓存区
+
+	printf("\nPlease input sent:\n");
+	fgets(sent, sizeof(sent), stdin);
+	sent[strcspn(sent, "\r\n")] = '\0';//清除缓存区
+
+	strcpy(cp_sent, sent);//拷贝副本
+
+	//将查找对象转换为小写
+	while (sch[j])
+	{
+		sch[j] = tolower(sch[j]);
+		j++;
+	}
+
+	//将副本全部转化为小写
+	while (cp_sent[i])
+	{
+		cp_sent[i] = tolower(cp_sent[i]);
+		i++;
+	}
+
+	p_first = strstr(cp_sent, sch);//查找第一次出现位置
+
+	token = strtok(cp_sent, space);//分割单词
+
+	if (p_first != NULL)
+	{
+		while (token != NULL)
+		{
+			if (!strcmp(token,sch))
+			{
+				count++;//计数
+			}
+			token = strtok(NULL, space);
+		}
+		printf("%d\n", count);//出现次数
+		printf("%d\n", (int)(p_first - cp_sent));//第一次出现位置
+
+	}
+	else
+	{
+		printf("-1");//未找到
+	}
+
+	return 0;
+}
+```
+
+---
+
+
