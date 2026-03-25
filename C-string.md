@@ -479,7 +479,7 @@ int main()
 
 
 ## 字符串综合练习1
-
+### 在句子中匹配给定的单词
 ```C
 //在句子中匹配给定的单词
 int main()
@@ -548,4 +548,226 @@ int main()
 
 ---
 
+### 逆转数
+```C
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <assert.h>
+#include <ctype.h>
 
+//逆转数
+//末尾不含0的正整数
+//末尾含0的正整数
+//末尾不含0的负整数
+//末尾含0的负整数
+//找出需要逆转的satr和end
+
+void reverse(char* num2,size_t start,size_t end)
+{
+	assert(num2 != NULL);
+
+	char tmp;
+
+	//逆转
+	while (&num2[start] < &num2[end])
+	{
+		tmp = num2[start];
+		num2[start] = num2[end];
+		num2[end] = tmp;
+
+		//num2++;//致命BUG!!!通过对指针的操作来改变指向前面的元素，但是数组整个指针都被修改了，会影响指向后者的指针
+		start++;
+		end--;
+	}
+}
+
+void select_reverse(char* num1,size_t len)
+{
+	assert(num1 != NULL);
+
+	size_t end = len - 1;
+	size_t start;
+
+	if (*num1 != '-')//正数
+	{
+		start = 0;
+
+		if (num1[end] != '0')//末尾不含0的正整数
+		{
+			reverse(num1,start,end);//逆转
+		}
+		else//末尾含0的正整数
+		{
+			for (; num1[end] == '0'; end--)//将end定位到最后一个非0数字
+			{
+				;
+			}
+
+			reverse(num1,start,end);//逆转
+		}
+	}
+	else//负数
+	{
+		start = 1;
+
+		if (num1[end] != '0')//末尾不含0的负整数
+		{
+			reverse(num1,start,end);//逆转
+		}
+		else//末尾含0的负整数
+		{
+			for (; num1[end] == '0'; end--)//将end定位到最后一个非0位置
+			{
+				;
+			}
+
+			reverse(num1,start,end);//逆转
+		}
+	}
+}
+int main()
+{ 
+	char num[101];
+
+	puts("Please input:");
+	fgets(num, sizeof(num), stdin);
+	num[strcspn(num, "\r\n")] = '\0';
+
+
+	size_t len = strlen(num);
+
+	select_reverse(num,len);
+
+	puts("After reverse:");
+	puts(num);
+
+	return 0;
+}
+```
+
+---
+
+### 比较两个大整数的大小
+```C
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <assert.h>
+#include <ctype.h>
+
+int compare(char* num1, char* num2)
+{
+	if (num1[0] == '-' && num2[0] != '-')//num1为负数，num2为正数
+	{
+		return -1;
+	}
+	else if (num1[0] != '-' && num2[0] == '-')//num1为正数，num2为负数
+	{
+		return 1;
+	}
+	else if(num1[0] == '-' && num2[0] == '-')//两者同时为负，数字越大值越小
+	{
+		int ret = strcmp(num1, num2);
+		if (ret > 0)
+		{
+			return -1;
+		}
+		else if (ret < 0)
+		{
+			return 1;
+		}
+		else
+		{
+			return 0;
+		}
+	}
+	else
+	{
+		int ret = strcmp(num1, num2);
+		if (ret > 0)
+		{
+			return 1;
+		}
+		else if (ret < 0)
+		{
+			return -1;
+		}
+		else
+		{
+			return 0;
+		}
+	}
+}
+
+int main()
+{
+	char num1[101];
+	char num2[101];
+
+	puts("Please input num1:");
+	fgets(num1,sizeof(num1),stdin);
+	num1[strcspn(num1, "\n")] = '\0';
+
+	puts("Please input num2:");
+	fgets(num2, sizeof(num2), stdin);
+	num2[strcspn(num2, "\n")] = '\0';
+
+	int ret = compare(num1,num2);
+
+	printf("The result is: %d\n", ret);
+
+	return 0;
+}
+```
+
+---
+
+### 查找最大整数
+```C
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <assert.h>
+#include <ctype.h>
+
+int MAX(int* arr, const unsigned int n)
+{
+	int i = 0;
+	unsigned int k = n;
+	int max = *arr;
+
+	while (k--)
+	{
+		if (*(arr + i++) > max)
+		{
+			max = *(arr + i++);
+		}
+	}
+	return max;
+}
+
+int main()
+{
+	const unsigned int n;
+	const int* arr;//定义数组
+
+	puts("请输入元素个数：");
+	scanf("%u", &n);
+	arr = (int*)malloc(n * sizeof(int));//动态分配数组空间
+
+	puts("请输入元素：");
+	for (int i = 0; i < n; i++)
+	{
+		scanf("%d", arr + i);//为数组赋值
+	}
+
+	int max = MAX(arr,n);
+
+	printf("max = %d\n", max);
+
+	return 0;
+}
+```
+注意⚠️
+- `arr+1`是一个计算结果，`arr`本身不会被改变❗❗❗
