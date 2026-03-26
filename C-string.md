@@ -42,10 +42,11 @@ int main()
 
 	puts("Please input str1:");
 	fgets(str1, sizeof(str1), stdin);
+	str1[strcspn(str1,"\n")] = '\0';
 
 	puts("Please input str2:");
 	fgets(str2, sizeof(str2), stdin);
-
+	str2[strcspn(str2,"\n")] = '\0';
 	//use my copy function
 	my_strcpy(str1, str2);
 
@@ -226,7 +227,7 @@ int main()
 }
 ```
 **注意**⚠️
-- 追加后的字符串会自动补上`\0`，以确保有结束标志
+- 追加后的字符串会**自动**补上`\0`，以确保有结束标志
 - 当指定的追加长度大于源字符串长度时，只追加源字符串内容，最后补上`\0`
 - 要确保被追加的目标空间能够容纳追加的字符串和`\0`
 
@@ -253,7 +254,7 @@ int main()
 }
 ```
 注意⚠️
-- `strncpy()`拷贝后不会自动补`\0`❗❗❗
+- `strncpy()`拷贝后不会自动补`\0`❗❗❗ ^0d6a4a
 - 当指定的拷贝字符数量大于源字符串时，超过的部分以`\0`代替
 - 确保目标空间足够容纳
 
@@ -277,6 +278,7 @@ int main()
 ```
 
 ---
+
 
 ## C库函数`strstr()`
 `char *strstr(const char *str1, const char *str2);`在字符串`str1`中查找子字符串`str2`第一次出现的位置。如果找到，返回指向该位置的指针；若未找到，返回NULL
@@ -352,6 +354,7 @@ int main()
 
 	puts("请输入所要分割的字符:");
 	fgets(ch, sizeof(ch), stdin);
+	ch[strcspn(ch,"\n")] = '\0';
 
 	char *token;
 
@@ -365,7 +368,7 @@ int main()
 ```
 注意⚠️
 - 第一次传入所需分割的字符串指针，后续只需传入`NULL`
-- `strtok()` 会修改传入的字符串，将分隔符替换为 `\0`（空字符）。因此，原始字符串会被破坏
+- `strtok()` 会修改传入的字符串，将分隔符替换为 `\0`（空字符）。因此，原始字符串会被破坏，建议`strtok()`使用拷贝的那一份
 
 ---
 
@@ -771,3 +774,6 @@ int main()
 ```
 注意⚠️
 - `arr+1`是一个计算结果，`arr`本身不会被改变❗❗❗
+
+---
+
