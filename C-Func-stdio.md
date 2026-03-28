@@ -9,14 +9,22 @@
 - `n`为要读取的最大字符数（包括字符`\0`）
 - `stream`表示文件流，通常使用`stdin`表示标准输入
 
+注意⚠️
+>`fgets()`会读取末尾的换行符`\n`
+
 实例  
 ```C
 #include <stdio.h>
 
 int main() {
     char str[100];
+    
     printf("Enter a string: ");
     fgets(str, sizeof(str), stdin);
+    
+    //fgets()会读取换行符\n，可能会导致意外，建议将\n用\0替换掉
+    str[strcspn(str,"\n")] = '\0';
+    
     printf("You entered: %s", str);
     return 0;
 }

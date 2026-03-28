@@ -170,3 +170,34 @@ bool isValid(char* s) {
     return 0 == top;
 }
 ```
+
+---
+
+### 找到数组的中间位置
+```c
+int findMiddleIndex(int* nums, int numsSize) {
+
+    /*****************
+       设数组和为total，遍历到第i个元素nums[i]时，则左侧和为left，右侧和为total-left-nums[i]
+       又因为找中间元素下标，则使该元素左侧和等于右侧和，那么：total = 2*left + nums[i]
+    *****************/
+
+    int total = 0;
+    for(int i = 0;i<numsSize;i++)
+    {
+        total += nums[i];
+    }
+
+    int left = 0;
+    for(int i = 0;i<numsSize;i++)
+    {
+        if(total == 2*left + nums[i])//找到下标
+        {
+            return i;
+        }
+        left += nums[i];
+    }
+    //遍历数组均不满足
+    return -1;
+}
+```
