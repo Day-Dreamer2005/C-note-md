@@ -35,7 +35,6 @@ int main()
 ```
 
 ⚠️⚠️⚠️注意：
-![](./C-stdlib-1774704261697.webp)
+![](./Image/C-stdlib-1774705498673.webp)
 <mark style="background: #FF5582A6;">致命错误</mark> ：循环里使用 `*p++ = i++` 直接移动了 p，循环结束时 p 已不再指向 malloc 分配的起始地址；根据 C 标准，free 必须传入 **malloc 返回的指针或 NULL**
 
-1111111
