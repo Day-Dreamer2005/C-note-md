@@ -127,7 +127,7 @@ int main() {
 ```
 
 ---
-### `fscanf`
+### `fscanf()`
 将  **第一个参数流中的数据**  以  **第二个参数的格式**  输入到  **第三个参数指定的内存中**
 ```c
 int main()
@@ -155,7 +155,32 @@ int main()
 }
 ```
 
+---
 
+### `sscanf()`
+从字符串中读取格式化输入
+```c
+int main()
+{
+    struct data
+    {
+        char name[20];
+        int age;
+    };
+
+    struct data example = {0};
+
+    char buf[1024] = {"AsleepDragon\n20"};
+
+    sscanf(buf, "%s%d", &(example.name), &(example.age));
+
+    printf("%s\n%d\n",example.name,example.age);
+
+    return 0;
+}
+```
+
+---
 
 ## C输出函数  
 
