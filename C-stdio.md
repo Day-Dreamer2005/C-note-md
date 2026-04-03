@@ -1,6 +1,17 @@
+## 标准文件
+
+**C 语言把所有的设备都当作文件**。所以设备（比如显示器）被处理的方式与文件相同。以下三个文件会在程序执行时自动打开，以便访问键盘和屏幕。
+
+| 标准文件 | 文件指针   | 设备   |
+| ---- | ------ | ---- |
+| 标准输入 | stdin  | 键盘   |
+| 标准输出 | stdout | 屏幕   |
+| 标准错误 | stderr | 您的屏幕 |
+
+---
 
 ## C输入函数  
-
+### `fgets()`
 `fgets()`函数可以用来读取一行字符串（包括空格）  
 语法：
 	`char *fgets(char *str,int n,FILE *stream);`  
@@ -27,6 +38,38 @@ int main() {
     
     printf("You entered: %s", str);
     return 0;
+}
+```
+
+---
+
+### `fprintf()`
+将第三个参数的数据以第二个参数的格式输出到第一个参数
+```c
+int main()
+{
+    FILE* pf = fopen("test.txt","w");
+    if(pf == NULL)
+    {
+        printf("%s\n",strerror(errno));
+        return 0;
+    }
+
+    struct data
+    {
+        char name[20];
+        int age;
+        char career[50];
+    };
+
+    struct data example = {"AsleepDragon",20,"AI full stack engineer"};
+
+    fprintf(pf,"name:%s\nage:%d\ncareer:%s\n",example.name,example.age,example.career);
+
+    fclose(pf);
+    pf = NULL;
+
+    return 0;
 }
 ```
 
