@@ -127,20 +127,10 @@ int main() {
 ```
 
 ---
-
-### `fprintf()`
-将  **第三个参数的数据**  以  **第二个参数的格式**  输出到  **第一个参数对应的流中(FILE*)**  
-
+### `fscanf`
 ```c
 int main()
 {
-    FILE* pf = fopen("test.txt","w");
-    if(pf == NULL)
-    {
-        printf("%s\n",strerror(errno));
-        return 0;
-    }
-
     struct data
     {
         char name[20];
@@ -148,16 +138,23 @@ int main()
         char career[50];
     };
 
-    struct data example = {"AsleepDragon",20,"AI full stack engineer"};
+    struct data example = {0};
 
-    fprintf(pf,"name:%s\nage:%d\ncareer:%s\n",example.name,example.age,example.career);
+    FILE* pf = fopen("test.txt","r");
+    if(pf == NULL)
+    {
+        printf("%s\n",strerror(errno));
+        return 0;
+    }
+    fscanf(pf,"%s%d%s",&(example.name),&(example.age),&(example.career));
 
-    fclose(pf);
-    pf = NULL;
-
+    printf("%s\n%d\n%s\n",example.name,example.age,example.career);
     return 0;
+
 }
 ```
+
+
 
 ## C输出函数  
 
@@ -230,6 +227,7 @@ int main()
 	return 0;
 }
 ```
+
 
 ---
 ## 自定义实现`strlen()`函数功能  
