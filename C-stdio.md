@@ -128,6 +128,7 @@ int main() {
 
 ---
 ### `fscanf`
+将  **第一个参数流中的数据**  以  **第二个参数的格式**  输入到  **第三个参数指定的内存中**
 ```c
 int main()
 {
@@ -158,7 +159,8 @@ int main()
 
 ## C输出函数  
 
-`puts()`函数将一个字符串输出到标准输出设备，并自动在末尾添加换行符  
+### `puts()`
+将一个字符串输出到标准输出设备，并自动在末尾添加换行符  
 语法：
 		`int puts(const char *str);`  
 其中  
@@ -228,8 +230,52 @@ int main()
 }
 ```
 
+### `fprintf()`
+将  **第三个参数的数据**  以  **第二个参数的格式**  输出到  **第一个参数对应的流中(FILE*)**  
 
+```c
+int main()
+{
+    FILE* pf = fopen("test.txt","w");
+    if(pf == NULL)
+    {
+        printf("%s\n",strerror(errno));
+        return 0;
+    }
+
+    struct data
+    {
+        char name[20];
+        int age;
+        char career[50];
+    };
+
+    struct data example = {"AsleepDragon",20,"AI full stack engineer"};
+
+    fprintf(pf,"name:%s\nage:%d\ncareer:%s\n",example.name,example.age,example.career);
+
+    fclose(pf);
+    pf = NULL;
+
+    return 0;
+}
+```
 ---
+
+### `sprintf()`
+将数据格式化输出到字符串中
+```c
+int main()
+{
+    char str[100];
+
+    sprintf(str,"name:%s\nage:%d","AsleepDragon",20);
+
+    puts(str);
+
+    return 0;
+}
+```
 ## 自定义实现`strlen()`函数功能  
 
 ### 1.计数器方法  
