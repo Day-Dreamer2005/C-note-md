@@ -305,6 +305,23 @@ int main()
 
 ### `perror()`
 C 库函数 `void perror(const char *str)` 把一个描述性错误消息输出到标准错误 stderr。首先输出字符串 **str**，后跟一个冒号，然后是一个空格
+可以根据具体情况输出错误，示例：
+```c
+int main()
+{
+	FILE *pf = fopen("test.txt","r");
+	if(pf == NULL)
+	{
+		perror("open file test.txt error");
+		return 0;
+	}
+	fclose(pf);
+	pf = NULL;
+	return 0;
+}
+```
+当打开文件失败时输出：
+>open file test.txt error: No such file or directory
 
 ## 自定义实现`strlen()`函数功能  
 
