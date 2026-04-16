@@ -146,3 +146,16 @@ i += 1;//i = 2
 ## 关于`char`类型
 在 C 语言中，**`char` 本身就是一种整数类型**。  
 当把一个 `char`（或 `signed char` / `unsigned char`）用作函数参数时，如果该参数要求的是 **`int`**（比如 `fputc`、`printf` 等），编译器会把 `char` **提升（promotion）** 为 `int`。
+
+---
+
+### `malloc`分配多级指针
+当使用`malloc`分配多级指针时，注意不要二次定义类型，例如：`malloc`为`strs`分配二级指针`char**`类型内存，再对`strs`分配一级指针`char*`类型内存`*(strs+i)`时，不要对`*(strs+i)`二次定义为`char*`，因为`*(strs+i)`已经表示一级`char*`类型！
+```c
+    char** strs = (char**)malloc(sizeof(char*)*n);
+    *(strs+i) = (char*)malloc(sizeof(char)*5);      //✅
+    char* *(strs+i) = (char*)malloc(sizeof(char)*5);//❌
+```
+
+## `malloc`分配多级指针的内存释放
+当多级指针由`malloc`分配内存，释放内存时应该由内向外，例如：`malloc`对二级指针和一级指针都分配内存，最后应该先释放一级内存，再释放二级内存。若先释放二级内存，会导致一级内存丢失索引而无法释放！
